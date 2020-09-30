@@ -24,18 +24,9 @@ class CustomUser(models.Model):
         return self.user
 
 
-class Cart(models.Model):
-    user_cart = models.ForeignKey(CustomUser, verbose_name='владелец', on_delete=models.CASCADE)
-    products = models.ManyToManyField(ProductAdd, blank=True)
-    price_summ = models.FloatField(verbose_name='сумма заказа')
-
-    def __str__(self):
-        return self.products
-
-
 class ProductAdd(models.Model):
     user = models.ForeignKey(CustomUser, verbose_name='пользователь', on_delete=models.CASCADE)
-    cart = models.ForeignKey(Cart, verbose_name='корзина', on_delete=models.CASCADE)
+    # cart = models.ForeignKey(Cart, verbose_name='корзина', on_delete=models.CASCADE, related_name='related_products')
     product = models.ForeignKey(Product, verbose_name='товар', on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(verbose_name='количество')
     price_summ = models.FloatField(verbose_name='сумма заказа')
@@ -44,4 +35,10 @@ class ProductAdd(models.Model):
         return self.product
 
 
+class Cart(models.Model):
+    user_cart = models.ForeignKey(CustomUser, verbose_name='владелец', on_delete=models.CASCADE)
+    products = models.ManyToManyField(ProductAdd, blank=True)
+    price_summ = models.FloatField(verbose_name='сумма заказа')
 
+    def __str__(self):
+        return self.products
